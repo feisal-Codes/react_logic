@@ -17,37 +17,35 @@ const Shop = ({ handleClick }) => {
       }),
   );
   const [filteredItems, setFilteredItems] = useState([]);
-  // console.log(categories);
+
   useEffect(() => {
     let filterProducts = () => {
-      if (filters.price) {
-        if (filters.price === "high") {
-          setFilteredItems([...data].sort((a, b) => b.price - a.price));
-        } else if (filters.price === "low") {
-          setFilteredItems([...data].sort((a, b) => a.price - b.price));
-        } else {
-          setFilteredItems(data);
-        }
-      }
-      if (filters.category) {
-        console.log("here");
-        setFilteredItems((prev) =>
-          prev
-            .filter((item) => filters.category.includes(item.category))
-            .sort((a, b) => {
-              if (filters.price === "low") {
-                return a.price - b.price;
-              } else if (filters.price === "high") {
-                return b.price - a.price;
-              }
-              return 0;
-            }),
+      // Start with the full data
+      let filteredData = [...data];
+
+      // Apply category filter
+      if (filters.category.length > 0) {
+        filteredData = filteredData.filter((item) =>
+          filters.category.includes(item.category),
         );
       }
+
+      // Apply price filter
+      if (filters.price) {
+        if (filters.price === "high") {
+          filteredData.sort((a, b) => b.price - a.price);
+        } else if (filters.price === "low") {
+          filteredData.sort((a, b) => a.price - b.price);
+        }
+      }
+
+      // Set the filtered items
+      setFilteredItems(filteredData);
     };
+
     filterProducts();
-  }, [filters, data]);
-  // console.log(filteredItems);
+  }, [filters.price, filters.category, data]);
+  console.log("here", filteredItems);
   const handleChange = (e) => {
     const { value, name } = e.target;
     setFilters((prev) => {
@@ -67,10 +65,12 @@ const Shop = ({ handleClick }) => {
       }
     });
   };
+
+  const onSearch = (e) => {};
   console.log(filters);
   return (
     <>
-      <Header />
+      <Header handleChange={onSearch} />
       <div
         style={{
           display: "flex",
@@ -79,14 +79,14 @@ const Shop = ({ handleClick }) => {
         }}
       >
         <div style={{ display: "flex" }}>
-          <div style={{}}>
+          <div style={{ width: "80%" }}>
             {filteredItems.length ? (
               <Products handleAddToCart={handleClick} data={filteredItems} />
             ) : (
               <Products handleAddToCart={handleClick} data={data} />
             )}
           </div>
-          <div style={{ width: "700px" }}>
+          <div style={{ width: "20%" }}>
             <h4>Filter On Pricing</h4>
 
             <div>

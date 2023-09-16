@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-const Header = () => {
+const Header = ({handleChange}) => {
   return (
     <>
       <header style={{ display: "flex", justifyContent: "center" }}>
@@ -10,6 +10,9 @@ const Header = () => {
           <Link to="/cart">Cart</Link>
         </h4>
       </header>
+      <div>
+        <input type="text" name="search" onChange={handleChange}/>
+      </div>
     </>
   );
 };
