@@ -10,7 +10,7 @@ const List = ({ data, handleAddToCart }) => {
                 textAlign: "center",
                 width: "300px",
                 height: "500px",
-                paddingBottom: "10px"
+                paddingBottom: "10px",
               }}
             >
               <img
@@ -19,6 +19,10 @@ const List = ({ data, handleAddToCart }) => {
                 height="200px"
                 alt="product"
               />
+              <h5>
+                <i>{product.category}</i>
+              </h5>
+
               <h4>{product.title}</h4>
               <p style={{ width: "300px" }}>
                 {product.description.substring(0, 100)}
