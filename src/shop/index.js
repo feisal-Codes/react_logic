@@ -6,7 +6,7 @@ import { products } from "../data";
 const Shop = ({ handleClick }) => {
   const [filters, setFilters] = useState({
     price: "default",
-    category: "",
+    category: [],
   });
   const [data] = useState(products);
   const [categories, setCategories] = useState(
@@ -17,7 +17,7 @@ const Shop = ({ handleClick }) => {
       }),
   );
   const [filteredItems, setFilteredItems] = useState([]);
-  console.log(categories);
+  // console.log(categories);
   useEffect(() => {
     let filterProducts = () => {
       if (filters.price) {
@@ -33,7 +33,7 @@ const Shop = ({ handleClick }) => {
         console.log("here");
         setFilteredItems((prev) =>
           prev
-            .filter((item) => item.category === filters.category)
+            .filter((item) => filters.category.includes(item.category))
             .sort((a, b) => {
               if (filters.price === "low") {
                 return a.price - b.price;
@@ -47,11 +47,24 @@ const Shop = ({ handleClick }) => {
     };
     filterProducts();
   }, [filters, data]);
-  console.log(filteredItems);
+  // console.log(filteredItems);
   const handleChange = (e) => {
     const { value, name } = e.target;
     setFilters((prev) => {
-      return { ...prev, [name]: value };
+      let indexOfCategory = prev.category.indexOf(value);
+
+      if (name === "price") {
+        return { ...prev, [name]: value };
+      } else if (name === "category") {
+        if (prev.category.length === 0) {
+          return { ...prev, [name]: [value] };
+        } else if (indexOfCategory === -1) {
+          return { ...prev, [name]: [...prev.category, value] };
+        } else if (indexOfCategory !== -1) {
+          let updated = prev.category.filter((item) => item !== value);
+          return { ...prev, [name]: updated };
+        }
+      }
     });
   };
   console.log(filters);
@@ -113,7 +126,12 @@ const Shop = ({ handleClick }) => {
                     <input
                       type="checkbox"
                       name="category"
-                      checked={category === filters.category ? true : false}
+                      checked={
+                        category ===
+                        filters.category.find((item) => item === category)
+                          ? true
+                          : false
+                      }
                       value={category}
                       onChange={handleChange}
                     />
