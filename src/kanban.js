@@ -1,17 +1,22 @@
+// Import the useState hook from React
 import { useState } from "react";
 
+// Define a functional component named Assembly that receives a 'list' prop
 function Assembly({ list }) {
-  const [task, setTask] = useState("");
-  const [items, setItems] = useState(list.map((element) => []));
+  // Initialize state variables using the useState hook
+  const [task, setTask] = useState(""); // State for input task
+  const [items, setItems] = useState(list.map((element) => [])); // State for managing items in arrays
 
+  // Handle changes in the input field
   const handleChange = (e) => {
-    setTask(e.target.value);
+    setTask(e.target.value); // Update the 'task' state with the input value
   };
 
+  // Handle clicks and context menu clicks on the buttons
   const handleClick = (e, _idx, idx) => {
     e.preventDefault();
-    let leftClick = e.button === 0;
-    let rightClick = e.button === 2;
+    const leftClick = e.button === 0;
+    const rightClick = e.button === 2;
     let lastElement;
     let firstElement;
 
@@ -30,10 +35,7 @@ function Assembly({ list }) {
             return subarray.slice(0, -1);
           } else if (leftClick && _idx === 0 && index !== 0) {
             // Left-click on the first element in the array
-            console.log("here weare the first elemnt and the last one");
             firstElement = subarray[_idx];
-
-            console.log(firstElement);
             return subarray.slice(1);
           }
         } else if (index === idx + 1 && lastElement !== undefined) {
@@ -45,30 +47,33 @@ function Assembly({ list }) {
         }
         return subarray;
       });
-      console.log(newArray);
-      return newArray;
+      return newArray; // Update the state with the modified arrays
     });
   };
 
+  // Handle form submission to add a new task
   const submit = (e) => {
     e.preventDefault();
     setItems((prev) => {
       return prev.map((subarray, index) => {
         if (index === 0) {
-          return [task, ...subarray];
+          return [task, ...subarray]; // Add the new task to the first array
         } else {
           return subarray;
         }
       });
     });
+    setTask(""); // Clear the input field
   };
+
+  // Render the component's UI
   return (
     <div>
-      <h2>assembly line</h2>
+      <h2>Assembly Line</h2>
       <form onSubmit={submit}>
         <input
           type="text"
-          placeholder="enter task"
+          placeholder="Enter task"
           value={task}
           onChange={handleChange}
         />
@@ -80,7 +85,7 @@ function Assembly({ list }) {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-around",
-          marginTop: "30px"
+          marginTop: "30px",
         }}
       >
         {list.map((element, idx) => (
@@ -88,7 +93,7 @@ function Assembly({ list }) {
             key={idx}
             style={{
               display: "flex",
-              flexDirection: "column"
+              flexDirection: "column",
             }}
           >
             <h4>{element}</h4>
@@ -114,4 +119,5 @@ function Assembly({ list }) {
   );
 }
 
+// Export the Assembly component
 export default Assembly;

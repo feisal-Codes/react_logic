@@ -11,6 +11,7 @@ import Shop from "./shop";
 import { Route, Routes } from "react-router-dom";
 import Cart from "./shop/cart";
 import { products } from "./data";
+import DisplayWeather from "./weather/weather";
 
 const Tasks = [
   { id: 1, name: "Buy groceries", completed: false },
@@ -18,7 +19,7 @@ const Tasks = [
   { id: 3, name: "Walk the dog", completed: false },
   { id: 4, name: "shopping", completed: false },
   { id: 5, name: "Finish classwork", completed: true },
-  { id: 6, name: "sleep", completed: false }
+  { id: 6, name: "sleep", completed: false },
 ];
 const list = ["backlog", "todo", "progress", "done"];
 
@@ -46,6 +47,7 @@ export default function App() {
       <Routes>
         <Route exact path="/" element={<Shop handleClick={handleClick} />} />
         <Route path="/cart" element={<Cart cart={cart} setCart={setCart} />} />
+        <Route path="weather" element={<DisplayWeather />} />
       </Routes>
     </>
   );

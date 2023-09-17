@@ -15,49 +15,55 @@ Your task is to create the components and logic necessary to implement this shop
 
 import Header from "./header";
 
+// Define a functional component named Cart, which receives 'cart' and 'setCart' as props
 const Cart = ({ cart, setCart }) => {
+  // Function to update the quantity of an item in the cart
   const updateCart = (id, direction) => {
     let updatedCart = cart.map((item) => {
       if (item.id === id) {
         if (direction === "increase") {
-          return { ...item, quantity: item.quantity + 1 };
+          return { ...item, quantity: item.quantity + 1 }; // Increase quantity
         } else if (direction === "decrease" && item.quantity > 1) {
-          return { ...item, quantity: item.quantity - 1 };
+          return { ...item, quantity: item.quantity - 1 }; // Decrease quantity if greater than 1
         }
       }
       return item;
     });
-    setCart(updatedCart);
+    setCart(updatedCart); // Update the cart state with the modified cart
   };
 
+  // Function to remove an item from the cart
   const removeFromCart = (id) => {
-    let filteredCart = cart.filter((product) => product.id !== id);
-    setCart(filteredCart);
+    let filteredCart = cart.filter((product) => product.id !== id); // Remove item with the specified id
+    setCart(filteredCart); // Update the cart state with the filtered cart
   };
 
+  // Function to calculate the total price of an item
   const totalPrice = (price, quantity) => {
-    return Math.round(Number(price) * Number(quantity));
+    return Math.round(Number(price) * Number(quantity)); // Calculate total price
   };
 
+  // Calculate the updated total price of all items in the cart
   let updatedTotal = cart
     .map((product) => {
-      return Number(product.quantity) * Number(product.price);
+      return Number(product.quantity) * Number(product.price); // Calculate total price for each item
     })
-    .reduce((a, b) => Math.round(a + b), 0);
-  console.log("^^^^^^^^^^^^&&&&&&&&&&&&&&&");
+    .reduce((a, b) => Math.round(a + b), 0); // Sum all item prices to get the total
 
-  // console.log(calcTotalPrice());
+  // Check if the cart is empty
   if (cart.length === 0) {
     return (
       <>
-        <Header /> <div>cart is empty</div>
+        <Header /> {/* Render a header component */}
+        <div>cart is empty</div> {/* Display a message for an empty cart */}
       </>
     );
   }
+
+  // Render the cart table with item details
   return (
     <>
-      <Header />
-
+      <Header /> {/* Render a header component */}
       <table style={{ padding: "50px" }}>
         <thead>
           <tr>
@@ -71,7 +77,6 @@ const Cart = ({ cart, setCart }) => {
             <th>Total Price</th>
           </tr>
         </thead>
-        {/* <List data={cart} /> */}
         {cart.map((product) => {
           return (
             <tbody key={product.id}>
@@ -88,11 +93,10 @@ const Cart = ({ cart, setCart }) => {
                 <td style={{ width: "2px", fontWeight: "bold" }}>
                   {product.price}
                 </td>
-
                 <td style={{ width: "20px" }}>
                   <button
                     onClick={() => {
-                      updateCart(product.id, "increase");
+                      updateCart(product.id, "increase"); // Handle adding items
                     }}
                   >
                     +
@@ -103,7 +107,7 @@ const Cart = ({ cart, setCart }) => {
                   <button
                     disabled={product.quantity === 1}
                     onClick={() => {
-                      updateCart(product.id, "decrease");
+                      updateCart(product.id, "decrease"); // Handle decreasing items
                     }}
                   >
                     -
@@ -112,7 +116,7 @@ const Cart = ({ cart, setCart }) => {
                 <td style={{ width: "20px" }}>
                   <button
                     onClick={() => {
-                      removeFromCart(product.id);
+                      removeFromCart(product.id); // Handle removing items from the cart
                     }}
                   >
                     Remove from Cart
@@ -122,10 +126,11 @@ const Cart = ({ cart, setCart }) => {
                   style={{
                     width: "20px",
                     textAlign: "center",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
-                  {totalPrice(product.price, product.quantity)}
+                  {totalPrice(product.price, product.quantity)}{" "}
+                  {/* Display total price for each item */}
                 </td>
               </tr>
             </tbody>
@@ -137,11 +142,12 @@ const Cart = ({ cart, setCart }) => {
               style={{
                 textAlign: "right",
                 paddingRight: "10px",
-                fontWeight: "bold"
+                fontWeight: "bold",
               }}
               colSpan="8"
             >
-              Total : {updatedTotal}
+              Total : {updatedTotal}{" "}
+              {/* Display the total price of all items */}
             </td>
           </tr>
         </tbody>
@@ -150,4 +156,5 @@ const Cart = ({ cart, setCart }) => {
   );
 };
 
+// Export the Cart component
 export default Cart;
